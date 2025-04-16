@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function PromptGenerator() {
   const [prompt, setPrompt] = useState("");
+  const [category, setCategory] = useState("le-hoi");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -10,7 +11,8 @@ export default function PromptGenerator() {
     setLoading(true);
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_BASE}/generate-content`, {
-        prompt
+        prompt,
+        category
       });
       setResult(res.data);
     } catch (err) {
@@ -23,10 +25,21 @@ export default function PromptGenerator() {
   return (
     <div className="max-w-xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-10">
       <h2 className="text-2xl font-bold mb-4 text-center">🎯 Tạo nội dung AI văn hoá</h2>
+      <select
+        className="w-full border px-4 py-2 rounded mb-4"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="le-hoi">🏮 Lễ hội</option>
+        <option value="thien-nhien">🏞 Thiên nhiên</option>
+        <option value="kien-truc">🏯 Kiến trúc</option>
+        <option value="doi-song">👘 Đời sống</option>
+        <option value="nghe-thuat">🎶 Nghệ thuật</option>
+      </select>
       <input
         type="text"
         className="w-full border px-4 py-2 rounded mb-4"
-        placeholder="Ví dụ: Lễ hội đền Hùng giữa rừng Phú Thọ"
+        placeholder="Nhập prompt của bạn..."
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
